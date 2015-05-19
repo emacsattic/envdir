@@ -1,4 +1,4 @@
-;;; envdir-mode.el --- Modify environment according to files in a specified directory
+;;; envdir.el --- Modify environment according to files in a specified directory
 
 ;; Copyright (C) 2015 by Artem Malyshev
 
@@ -29,46 +29,46 @@
 (require 'dash)
 (require 'f)
 
-(defgroup envdir-mode nil
+(defgroup envdir nil
   "Modify environment according to files in a specified directory."
   :group 'languages)
 
-(defcustom envdir-mode-mode-line-format
+(defcustom envdir-mode-line-format
   '(:eval
-    (when envdir-mode-active-directory
-      (concat "Envdir:" (f-base envdir-mode-active-directory) " ")))
-  "How `envdir-mode' will indicate current envdir in the mode line."
-  :group 'envdir-mode)
+    (when envdir-active-directory
+      (concat "Envdir:" (f-base envdir-active-directory) " ")))
+  "How `envdir-mode' will indicate current envdir in the mode-line."
+  :group 'envdir)
 
-(defvar envdir-mode-active-directory nil
-  "Current activated environment directory.")
+(defvar envdir-active-directory nil
+  "Currently activated environment directory.")
 
 ;;;###autoload
-(defun envdir-mode-set (dirname)
+(defun envdir-set (dirname)
   "Set environment variables from DIRNAME."
   (interactive "DEnvdir: ")
-  (envdir-mode-unset)
+  (envdir-unset)
   (--map (setenv (car it) (cdr it))
-         (envdir-mode-read-directory dirname))
-  (setq envdir-mode-active-directory dirname)
+         (envdir-read-directory dirname))
+  (setq envdir-active-directory dirname)
   (force-mode-line-update))
 
 ;;;###autoload
-(defun envdir-mode-unset ()
+(defun envdir-unset ()
   "Unset environment variables from last activated directory."
   (interactive)
-  (when envdir-mode-active-directory
+  (when envdir-active-directory
     (--map (setenv (car it))
-           (envdir-mode-read-directory envdir-mode-active-directory))
-    (setq envdir-mode-active-directory nil))
+           (envdir-read-directory envdir-active-directory))
+    (setq envdir-active-directory nil))
   (force-mode-line-update))
 
 (defvar envdir-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-c C-e") 'envdir-mode-set)
-    (define-key map (kbd "C-c C-n") 'envdir-mode-unset)
+    (define-key map (kbd "C-c C-e") 'envdir-set)
+    (define-key map (kbd "C-c C-n") 'envdir-unset)
     map)
-  "Keymap for envdir-mode.")
+  "Keymap for `envdir-mode'.")
 
 ;;;###autoload
 (define-minor-mode envdir-mode
@@ -78,13 +78,13 @@
   :lighter ""
   :keymap envdir-mode-map
   (if envdir-mode
-      (add-to-list 'mode-line-misc-info envdir-mode-mode-line-format)
+      (add-to-list 'mode-line-misc-info envdir-mode-line-format)
     (setq mode-line-misc-info
-          (delete envdir-mode-mode-line-format mode-line-misc-info))))
+          (delete envdir-mode-line-format mode-line-misc-info))))
 
-(defun envdir-mode-read-directory (dirname)
+(defun envdir-read-directory (dirname)
   "Read environment variables from DIRNAME."
   (--map (cons (f-filename it) (s-trim-right (f-read-text it)))
          (f-files dirname)))
 
-;;; envdir-mode.el ends here
+;;; envdir.el ends here
