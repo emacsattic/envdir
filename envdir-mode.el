@@ -29,11 +29,24 @@
 (require 'dash)
 (require 'f)
 
+(defvar envdir-mode--active-directory nil
+  "Current activated environment directory.")
+
 (defun envdir-mode-set (dirname)
   "Set environment variables from DIRNAME."
   (interactive "DEnvdir: ")
+  (envdir-mode-unset)
   (--map (setenv (car it) (cdr it))
-         (envdir-mode-read-directory dirname)))
+         (envdir-mode-read-directory dirname))
+  (setq envdir-mode--active-directory dirname))
+
+(defun envdir-mode-unset ()
+  "Unset environment variables from last activated directory."
+  (interactive)
+  (when envdir-mode--active-directory
+    (--map (setenv (car it))
+           (envdir-mode-read-directory envdir-mode--active-directory))
+    (setq envdir-mode--active-directory nil)))
 
 (defun envdir-mode-read-directory (dirname)
   "Read environment variables from DIRNAME."
