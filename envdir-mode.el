@@ -32,6 +32,7 @@
 (defvar envdir-mode--active-directory nil
   "Current activated environment directory.")
 
+;;;###autoload
 (defun envdir-mode-set (dirname)
   "Set environment variables from DIRNAME."
   (interactive "DEnvdir: ")
@@ -40,6 +41,7 @@
          (envdir-mode-read-directory dirname))
   (setq envdir-mode--active-directory dirname))
 
+;;;###autoload
 (defun envdir-mode-unset ()
   "Unset environment variables from last activated directory."
   (interactive)
