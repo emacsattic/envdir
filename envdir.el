@@ -87,4 +87,6 @@
   (--map (cons (f-filename it) (s-trim-right (f-read-text it)))
          (f-files dirname)))
 
+(provide 'envdir)
+
 ;;; envdir.el ends here
