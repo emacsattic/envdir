@@ -1,5 +1,5 @@
-.. |melpa| image:: http://melpa.org/packages/envdir-mode-badge.svg
-    :target: http://melpa.org/#/envdir-mode
+.. |melpa| image:: http://melpa.org/packages/envdir-badge.svg
+    :target: http://melpa.org/#/envdir
     :alt: Melpa
 
 ===========
