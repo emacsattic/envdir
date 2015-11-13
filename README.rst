@@ -48,4 +48,4 @@ You can unset current envdir with::
     M-x envdir-mode-unset
 
 .. _envdir: https://github.com/jezdez/envdir
-.. _Melpa: http://melpa.milkbox.net
+.. _Melpa: https://melpa.org
