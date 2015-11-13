@@ -1,3 +1,3 @@
 (source melpa)
 
-(package-file "envdir-mode.el")
+(package-file "envdir.el")
